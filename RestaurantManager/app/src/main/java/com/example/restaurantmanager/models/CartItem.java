@@ -1,9 +1,12 @@
 package com.example.restaurantmanager.models;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     private String cartItemId;
     private Dish dish;
     private int quantity;
+    private boolean isPrepared;
 
     public CartItem() {
     }
@@ -11,6 +14,7 @@ public class CartItem {
     public CartItem(Dish dish, int quantity) {
         this.dish = dish;
         this.quantity = quantity;
+        this.isPrepared = false;
     }
 
     public String getCartItemId() {
@@ -35,5 +39,13 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isPrepared() {
+        return isPrepared;
+    }
+
+    public void setPrepared(boolean isPrepared) {
+        this.isPrepared = isPrepared;
     }
 }

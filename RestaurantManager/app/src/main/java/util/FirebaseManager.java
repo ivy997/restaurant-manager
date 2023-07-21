@@ -2,8 +2,10 @@ package util;
 
 import androidx.annotation.NonNull;
 
+import com.example.restaurantmanager.models.CartItem;
 import com.example.restaurantmanager.models.Category;
 import com.example.restaurantmanager.models.Dish;
+import com.example.restaurantmanager.models.Order;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -21,12 +23,16 @@ public class FirebaseManager {
     private FirebaseFirestore db;
     private CollectionReference categoriesRef;
     private CollectionReference dishesRef;
+    private CollectionReference ordersRef;
+    private CollectionReference cartRef;
     private String userId;
 
     public FirebaseManager() {
         db = FirebaseFirestore.getInstance();
         categoriesRef = db.collection("Categories");
         dishesRef = db.collection("Dishes");
+        ordersRef = db.collection("Orders");
+        cartRef = db.collection("Cart");
         getUser();
     }
 
@@ -193,6 +199,58 @@ public class FirebaseManager {
                     } else {
                         callback.onError(task.getException().getMessage());
                     }
+                });
+    }
+
+    public void getOrders(Callback<List<Order>> callback) {
+        ordersRef
+                //.whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Order> orders = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Order order = document.toObject(Order.class);
+                        orders.add(order);
+                    }
+                    callback.onSuccess(orders);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    public void updateOrder(Order order, Callback<Void> callback) {
+        DocumentReference documentRef = ordersRef.document(order.getOrderId());
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("orderId", order.getOrderId());
+        updates.put("items", order.getItems());
+        updates.put("orderStatus", order.getOrderStatus());
+
+        documentRef.update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    public void updateCartItem(CartItem item, Callback<Void> callback) {
+        DocumentReference documentRef = cartRef.document(item.getCartItemId());
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("cartItemId", item.getCartItemId());
+        updates.put("dish", item.getDish());
+        updates.put("quantity", item.getQuantity());
+        updates.put("isPrepared", item.isPrepared());
+
+        documentRef.update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
                 });
     }
 }
