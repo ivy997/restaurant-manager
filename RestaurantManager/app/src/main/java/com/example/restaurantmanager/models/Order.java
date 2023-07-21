@@ -2,10 +2,11 @@ package com.example.restaurantmanager.models;
 
 import com.example.restaurantmanager.enums.OrderStatus;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     private String orderId;
     private List<CartItem> items;
     private Date orderDateAndTime;
