@@ -51,6 +51,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         itemsRecyclerView = findViewById(R.id.cartItemRecyclerView);
         Spinner spinner = findViewById(R.id.spinner);
         Button update = findViewById(R.id.updateBtn);
+        //Button delete = findViewById(R.id.deleteBtn);
 
         OrderStatus[] options = OrderStatus.values();
 

@@ -85,7 +85,7 @@ public class AddDishActivity extends AppCompatActivity {
             currentUserId = RestaurantUser.getInstance().getUserId();
         }
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
+        /*authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
@@ -93,7 +93,7 @@ public class AddDishActivity extends AppCompatActivity {
                     // IDK
                 }
             }
-        };
+        };*/
 
         Bundle extras = getIntent().getExtras();
         categoryId = extras.getString("categoryId");

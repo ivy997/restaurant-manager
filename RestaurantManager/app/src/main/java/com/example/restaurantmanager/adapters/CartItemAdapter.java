@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,17 +42,17 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
 
     public static class CartViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public TextView note;
         public TextView quantity;
         public CheckBox isPrepared;
+        public Button delete;
 
         public CartViewHolder(@NonNull View itemView, final CartItemAdapter.OnItemClickListener listener) {
             super(itemView);
 
             title = itemView.findViewById(R.id.dishName);
-            note = itemView.findViewById(R.id.noteTV);
             quantity = itemView.findViewById(R.id.itemCount);
             isPrepared = itemView.findViewById(R.id.isPrepared);
+            delete = itemView.findViewById(R.id.deleteItem);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,11 +80,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
     public void onBindViewHolder(@NonNull CartItemAdapter.CartViewHolder holder, int position) {
         CartItem item = items.get(position);
         String dishTitle = item.getDish().getName();
-        //String noteTxt = item.getNote();
         int itemCount = item.getQuantity();
 
         holder.title.setText(dishTitle);
-        holder.note.setText("Test");
         holder.quantity.setText(String.format("Qty: " + itemCount));
         holder.isPrepared.setChecked(item.isPrepared());
 
@@ -93,6 +92,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
                 // Update cartItem
                 item.setPrepared(holder.isPrepared.isChecked());
                 updateCartItem(item);
+            }
+        });
+
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Delete item from order
+
             }
         });
     }
