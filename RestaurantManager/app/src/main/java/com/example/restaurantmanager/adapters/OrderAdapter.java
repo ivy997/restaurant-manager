@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
     private Context context;
@@ -81,12 +82,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         Date date = order.getOrderDateAndTime();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String formattedTime = sdf.format(date);
+        Random random = new Random();
+        int r = random.nextInt(100000);
 
         holder.time.setText(formattedTime);
-        holder.orderNumber.setText("Order #1");
-        //holder.tableNumber.setText();
-        holder.totalPrice.setText(String.valueOf(order.getBillPrice()));
+        holder.orderNumber.setText("Order #" + r);
+        holder.totalPrice.setText(order.getBillPrice() + " лв.");
         holder.orderStatus.setText(String.valueOf(order.getOrderStatus()));
+        holder.tableNumber.setText(String.valueOf("Table #" + order.getTableNumber()));
     }
 
     @Override
