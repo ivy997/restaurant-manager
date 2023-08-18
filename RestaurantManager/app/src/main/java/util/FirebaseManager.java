@@ -8,6 +8,10 @@ import com.example.restaurantmanager.models.Dish;
 import com.example.restaurantmanager.models.Order;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -205,6 +209,7 @@ public class FirebaseManager {
     public void getOrders(Callback<List<Order>> callback) {
         ordersRef
                 //.whereEqualTo("userId", userId)
+                .orderBy("orderDateAndTime")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Order> orders = new ArrayList<>();
@@ -252,5 +257,65 @@ public class FirebaseManager {
                 .addOnFailureListener(e -> {
                     callback.onError(e.getMessage());
                 });
+    }
+
+    public void changePassword(String currentPassword, String newPassword, Callback<Void> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String email = user.getEmail();
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, currentPassword);
+        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                // Password changed successfully
+                                callback.onSuccess(null);
+                            } else {
+                                // Password change failed, handle the error
+                                callback.onError("Password update failed.");
+                            }
+                        }
+                    }).addOnFailureListener(e -> {
+                        callback.onError(e.getMessage());
+                    });
+                }
+            }
+        }).addOnFailureListener(e -> {
+            callback.onError(e.getMessage());
+        });
+    }
+
+    public void changeEmail(String currentPassword, String newEmail, Callback<Void> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String email = user.getEmail();
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, currentPassword);
+        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    user.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                // Email changed successfully
+                                callback.onSuccess(null);
+                            } else {
+                                // Email change failed, handle the error
+                                callback.onError("Email update failed.");
+                            }
+                        }
+                    }).addOnFailureListener(e -> {
+                        callback.onError(e.getMessage());
+                    });
+                }
+            }
+        }).addOnFailureListener(e -> {
+            callback.onError(e.getMessage());
+        });
     }
 }
