@@ -4,21 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="20dp"
     tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/loginSign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="120dp"
         android:text="Login"
         android:textColor="@color/black"
         android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/loginUndersign"
@@ -27,38 +26,29 @@
         android:layout_marginTop="4dp"
         android:text="Sign in to your account"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginSign" />
+        app:layout_constraintTop_toBottomOf="@+id/loginSign"/>
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="192dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="19dp"
+        android:layout_height="48sp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:hint="Email"
-        app:layout_constraintBottom_toTopOf="@+id/etPassword"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginUndersign" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="430dp"
+        android:layout_height="48sp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPassword"
         android:hint="Password"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
@@ -67,18 +57,12 @@
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="324dp"
-        android:backgroundTint="@color/black"
+        android:layout_marginTop="40dp"
         android:text="Login"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
-        app:layout_constraintVertical_bias="0.948" />
+        app:layout_constraintTop_toBottomOf="@+id/etPassword"/>
 
     <TextView
         android:id="@+id/registerTxt"
@@ -96,9 +80,7 @@
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="87dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="6dp"
-        android:backgroundTint="@color/black"
+        android:layout_height="48dp"
         android:text="Register"
         android:textColor="@color/white"
         android:textSize="10sp"
