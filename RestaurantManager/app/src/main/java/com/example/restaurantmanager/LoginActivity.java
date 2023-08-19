@@ -5,10 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -57,6 +59,39 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        Bundle extras = getIntent().getExtras();
+        String logout = "";
+        if (extras != null) {
+            logout = extras.getString("logout");
+        }
+
+        if (logout.isEmpty()) {
+            autoLogin();
+        } else {
+            SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove("rememberMe");
+            editor.remove("email");
+            editor.remove("userId");
+            editor.apply();
+        }
+
+        CheckBox rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
+        rememberMeCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                if (rememberMeCheckbox.isChecked()) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("rememberMe", true);
+                    editor.apply();
+                } else {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.remove("rememberMe");
+                    editor.apply();
+                }
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +136,11 @@ public class LoginActivity extends AppCompatActivity {
                                                     RestaurantUser restaurantUser = RestaurantUser.getInstance();
                                                     restaurantUser.setEmail(snapshot.getString("email"));
                                                     restaurantUser.setUserId(snapshot.getString("userId"));
+
+                                                    if (getRememberMe()) {
+                                                        onLoginSuccess(user.getUid(), email);
+                                                    }
+
                                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                                 }
                                             }
@@ -116,5 +156,31 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(LoginActivity.this, "Please enter email and password.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void onLoginSuccess(String token, String email) {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userToken", token);
+        editor.putString("email", email);
+        editor.apply();
+    }
+
+    // When app is opened (e.g., in onCreate of your MainActivity)
+    private void autoLogin() {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String token = preferences.getString("userToken", null);
+        String email = preferences.getString("email", null);
+        if (token != null && email != null) {
+            RestaurantUser restaurantUser = RestaurantUser.getInstance();
+            restaurantUser.setEmail(email);
+            restaurantUser.setUserId(token);
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
+    }
+
+    private boolean getRememberMe() {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        return preferences.getBoolean("rememberMe", false);
     }
 }
