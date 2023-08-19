@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -208,8 +209,8 @@ public class FirebaseManager {
 
     public void getOrders(Callback<List<Order>> callback) {
         ordersRef
-                //.whereEqualTo("userId", userId)
-                .orderBy("orderDateAndTime")
+                .whereEqualTo("userId", userId)
+                .orderBy("orderDateAndTime", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Order> orders = new ArrayList<>();

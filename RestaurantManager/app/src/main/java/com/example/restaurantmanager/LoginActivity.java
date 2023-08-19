@@ -127,15 +127,17 @@ public class LoginActivity extends AppCompatActivity {
                                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            if (error != null) {
+                                            /*if (error != null) {
 
-                                            }
+                                            }*/
                                             assert value != null;
                                             if (!value.isEmpty()) {
                                                 for (QueryDocumentSnapshot snapshot : value) {
+                                                    String restaurantName = snapshot.getString("restaurantName");
                                                     RestaurantUser restaurantUser = RestaurantUser.getInstance();
-                                                    restaurantUser.setEmail(snapshot.getString("email"));
-                                                    restaurantUser.setUserId(snapshot.getString("userId"));
+                                                    restaurantUser.setEmail(email);
+                                                    restaurantUser.setUserId(currentUserId);
+                                                    restaurantUser.setRestaurantName(restaurantName);
 
                                                     if (getRememberMe()) {
                                                         onLoginSuccess(user.getUid(), email);

@@ -29,6 +29,7 @@
             android:layout_margin="10dp">
 
             <TextView
+                android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Restaurant name"
@@ -36,6 +37,7 @@
                 style="@style/textStyleBold"/>
 
             <TextView
+                android:id="@+id/restaurantEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="test@email.bg"

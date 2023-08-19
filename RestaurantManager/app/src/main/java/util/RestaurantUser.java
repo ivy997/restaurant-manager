@@ -5,6 +5,7 @@ import android.app.Application;
 public class RestaurantUser extends Application {
     private String email;
     private String userId;
+    private String restaurantName;
 
     private static RestaurantUser instance;
 
@@ -34,5 +35,13 @@ public class RestaurantUser extends Application {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }
