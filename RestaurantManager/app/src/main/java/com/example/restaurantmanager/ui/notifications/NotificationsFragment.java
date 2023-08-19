@@ -43,6 +43,7 @@ public class NotificationsFragment extends Fragment {
         final TextView textView = binding.textNotifications;
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         logoutBtn = root.findViewById(R.id.logoutBtn);
         email = root.findViewById(R.id.editEmailLayout);
         password = root.findViewById(R.id.editPassLayout);
