@@ -21,6 +21,8 @@ import com.example.restaurantmanager.activities.ListCategoriesActivity;
 import com.example.restaurantmanager.databinding.FragmentNotificationsBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
+import util.RestaurantUser;
+
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
@@ -31,6 +33,8 @@ public class NotificationsFragment extends Fragment {
     private LinearLayout privacy;
     private LinearLayout about;
     private Button logoutBtn;
+    private TextView emailTV;
+    private TextView nameTV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,9 +48,17 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        nameTV = root.findViewById(R.id.restaurantName);
+        emailTV = root.findViewById(R.id.restaurantEmail);
         logoutBtn = root.findViewById(R.id.logoutBtn);
         email = root.findViewById(R.id.editEmailLayout);
         password = root.findViewById(R.id.editPassLayout);
+
+        RestaurantUser restaurantUser = RestaurantUser.getInstance();
+        if (restaurantUser != null) {
+            nameTV.setText(restaurantUser.getRestaurantName());
+            emailTV.setText(firebaseAuth.getCurrentUser().getEmail());
+        }
 
         email.setOnClickListener(new View.OnClickListener() {
             @Override

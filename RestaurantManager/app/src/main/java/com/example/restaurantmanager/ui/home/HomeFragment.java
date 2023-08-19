@@ -32,9 +32,11 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
 
     private FragmentHomeBinding binding;
     private FirebaseManager firebaseManager;
-    private RecyclerView orderRecyclerView;
     private OrderAdapter orderAdapter;
     private List<Order> orders;
+    private RecyclerView orderRecyclerView;
+    private TextView ordersCount;
+    private TextView ordersIncome;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
         firebaseManager = new FirebaseManager();
         orders = new ArrayList<>();
         orderRecyclerView = root.findViewById(R.id.ordersRecyclerView);
+        ordersCount = root.findViewById(R.id.todaysOrdersTV);
+        ordersIncome = root.findViewById(R.id.todaysProfitTV);
 
         orderAdapter = new OrderAdapter(orders);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -82,6 +86,7 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
             public void onSuccess(List<Order> result) {
                 orders = result;
                 orderAdapter.setOrders(orders);
+                getOrdersData();
             }
 
             @Override
@@ -89,5 +94,18 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getOrdersData() {
+        int totalOrders = 0;
+        float totalIncome = 0.0f;
+
+        for (Order order : this.orders) {
+            totalOrders++;
+            totalIncome += order.getBillPrice();
+        }
+
+        ordersCount.setText("Today's orders: " + totalOrders);
+        ordersIncome.setText("Today's profit: " + totalIncome + " лв.");
     }
 }

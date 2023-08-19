@@ -180,6 +180,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                         RestaurantUser restaurantUser = RestaurantUser.getInstance();
                                                         restaurantUser.setUserId(currUserId);
                                                         restaurantUser.setEmail(emailAddress);
+                                                        restaurantUser.setRestaurantName(res_name);
 
                                                         // If the user is registered successfully, move to MainActivity
                                                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
