@@ -42,7 +42,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="30dp"
-                    android:text="Today's orders: 24"
                     android:textAlignment="textStart"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -76,7 +75,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="30dp"
-                    android:text="Today's profit: 1189.65лв."
                     android:textAlignment="textStart"
                     android:textSize="12sp" />
             </LinearLayout>

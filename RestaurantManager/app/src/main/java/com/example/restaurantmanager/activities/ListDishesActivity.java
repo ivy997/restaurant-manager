@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,6 +42,9 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_dishes);
+
+        // Enable the up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String categoryId = "";
         Bundle extras = getIntent().getExtras();
@@ -180,5 +184,17 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
                 Toast.makeText(getApplicationContext(), "Couldn't delete category.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

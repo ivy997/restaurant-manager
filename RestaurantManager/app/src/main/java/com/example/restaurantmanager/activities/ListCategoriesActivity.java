@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,6 +46,9 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_categories);
+
+        // Enable the up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Initialize the RecyclerView and ArrayList
         categoryRecyclerView = findViewById(R.id.category_recycler_view);
@@ -156,5 +160,17 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
                 Toast.makeText(getApplicationContext(), "Couldn't delete category.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

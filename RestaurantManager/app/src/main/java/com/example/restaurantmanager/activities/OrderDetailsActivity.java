@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.restaurantmanager.MainActivity;
 import com.example.restaurantmanager.R;
 import com.example.restaurantmanager.adapters.CartItemAdapter;
 import com.example.restaurantmanager.adapters.OrderAdapter;
@@ -29,7 +31,7 @@ import java.util.List;
 import util.Callback;
 import util.FirebaseManager;
 
-public class OrderDetailsActivity extends AppCompatActivity implements CartItemAdapter.OnItemClickListener {
+public class OrderDetailsActivity extends AppCompatActivity implements CartItemAdapter.OnItemClickListener{
 
     private FirebaseManager firebaseManager;
     private CartItemAdapter itemAdapter;
@@ -42,6 +44,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         setContentView(R.layout.activity_order_details);
 
         firebaseManager = new FirebaseManager();
+
+        // Enable the up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Order order = (Order) getIntent().getSerializableExtra("order");
         items = order.getItems();
@@ -57,7 +62,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
 
         itemAdapter = new CartItemAdapter(items);
         itemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        itemAdapter.setOnItemClickListener(this);
+        itemAdapter.setOnItemClickListener(this, this, order);
         itemsRecyclerView.setAdapter(itemAdapter);
 
         ArrayAdapter<OrderStatus> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options);
@@ -99,8 +104,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         firebaseManager.updateOrder(order, new Callback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                Toast.makeText(OrderDetailsActivity.this, "Order status updated successfully", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(getApplicationContext(), HomeFragment.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
             }
 
@@ -122,5 +126,17 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         }
 
         return position;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

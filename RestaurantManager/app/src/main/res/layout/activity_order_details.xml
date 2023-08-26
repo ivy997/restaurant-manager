@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_margin="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,13 +52,17 @@
                 android:text="Status"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/white_background"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp">
 
                 <View
                     android:id="@+id/infoSeparator"
@@ -91,8 +95,8 @@
                     style="@android:style/Widget.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
                     android:text="Update"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -102,8 +106,8 @@
                     style="@android:style/Widget.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:text="Delete"
                     android:visibility="gone"
                     android:textColor="@color/white"
