@@ -7,6 +7,7 @@ public class CartItem implements Serializable {
     private Dish dish;
     private int quantity;
     private boolean isPrepared;
+    private String userId;
 
     public CartItem() {
     }
@@ -47,5 +48,13 @@ public class CartItem implements Serializable {
 
     public void setPrepared(boolean isPrepared) {
         this.isPrepared = isPrepared;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

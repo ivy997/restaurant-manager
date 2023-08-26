@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +54,9 @@ public class UpdateDishActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_dish);
+
+        // Enable the up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseManager = new FirebaseManager();
@@ -191,5 +195,17 @@ public class UpdateDishActivity extends AppCompatActivity {
             public void onError(String errorMessage) {
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

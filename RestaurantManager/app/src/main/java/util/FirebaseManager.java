@@ -260,6 +260,33 @@ public class FirebaseManager {
                 });
     }
 
+    public void updateCartItemInOrder(Order order, Callback<Void> callback) {
+        DocumentReference documentRef = ordersRef.document(order.getOrderId());
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("items", order.getItems());
+
+        documentRef.update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    public void deleteCartItem(String cartItemId, Callback<Void> callback) {
+        cartRef.document(cartItemId)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess(null);
+                    } else {
+                        callback.onError(task.getException().getMessage());
+                    }
+                });
+    }
+
     public void changePassword(String currentPassword, String newPassword, Callback<Void> callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String email = user.getEmail();
