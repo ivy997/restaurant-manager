@@ -7,6 +7,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,9 +25,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.restaurantmanager.MainActivity;
 import com.example.restaurantmanager.R;
 import com.example.restaurantmanager.adapters.CategoryAdapter;
 import com.example.restaurantmanager.models.Category;
+import com.example.restaurantmanager.ui.dashboard.DashboardFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -61,10 +65,6 @@ public class AddCategoryActivity extends AppCompatActivity {
 
     // User id and Username
     private String currentUserId;
-    private String restaurantName;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser user;
 
 
     @Override
@@ -88,16 +88,6 @@ public class AddCategoryActivity extends AppCompatActivity {
         if (RestaurantUser.getInstance() != null) {
             currentUserId = RestaurantUser.getInstance().getUserId();
         }
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // IDK
-                }
-            }
-        };
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,9 +137,6 @@ public class AddCategoryActivity extends AppCompatActivity {
                                                     String categoryId = documentReference.getId();
                                                     category.setCategoryId(categoryId);
                                                     updateCategory(category);
-                                                    /*startActivity(new Intent(AddCategoryActivity.this,
-                                                            ListCategoriesActivity.class));*/
-                                                    finish();
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
@@ -203,6 +190,8 @@ public class AddCategoryActivity extends AppCompatActivity {
         firebaseManager.updateCategory(category, new Callback<Void>() {
             @Override
             public void onSuccess(Void result) {
+                finish();
+                onBackPressed();
             }
 
             @Override

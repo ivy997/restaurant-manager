@@ -1,6 +1,7 @@
 package com.example.restaurantmanager.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,8 +9,10 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -17,15 +20,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.restaurantmanager.R;
+import com.example.restaurantmanager.activities.ListCategoriesActivity;
+import com.example.restaurantmanager.activities.UpdateCategoryActivity;
 import com.example.restaurantmanager.models.Category;
 
 import java.util.List;
+
+import util.Callback;
+import util.FirebaseManager;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context context;
     private List<Category> categories;
     private OnItemClickListener listener;
+    private FirebaseManager firebaseManager;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -37,20 +46,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public CategoryAdapter(List<Category> categories) {
         this.categories = categories;
+        this.firebaseManager = new FirebaseManager();
     }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         public TextView categoryNameTextView;
         public ImageView categoryImage;
-        public ImageView deleteImageView;
         public View foregroundView;
+        private Button editCategory;
+        private Button deleteCategory;
+
 
         public CategoryViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             categoryNameTextView = itemView.findViewById(R.id.category_name_text_view);
             categoryImage = itemView.findViewById(R.id.categoryImg);
-            deleteImageView = itemView.findViewById(R.id.delete_image_view);
             foregroundView = itemView.findViewById(R.id.foreground_view);
+            editCategory = itemView.findViewById(R.id.editCat);
+            deleteCategory = itemView.findViewById(R.id.deleteCat);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,6 +93,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         Category category = categories.get(position);
         holder.categoryNameTextView.setText(category.getName());
+
         imageUrl = category.getImageUrl();
 
         Glide.with(context)
@@ -88,33 +102,25 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 .fitCenter()
                 .into(holder.categoryImage);
 
-        // Set the visibility of the delete image to GONE by default
-        holder.deleteImageView.setVisibility(View.GONE);
-
-        // Set up swipe-to-delete behavior
-        ItemTouchHelper.SimpleCallback swipeToDeleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-
+        holder.editCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UpdateCategoryActivity.class);
+                intent.putExtra("id", category.getCategoryId());
+                intent.putExtra("name", category.getName());
+                intent.putExtra("image", category.getImageUrl());
+                context.startActivity(intent);
             }
+        });
 
+        holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int adapterPosition = viewHolder.getAdapterPosition();
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    categories.remove(adapterPosition);
-                    notifyItemRemoved(adapterPosition);
-                }
+            public void onClick(View v) {
+                categories.remove(category);
+                notifyDataSetChanged();
+                deleteCategory(category.getCategoryId());
             }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
-        itemTouchHelper.attachToRecyclerView(holder.itemView.getRootView().findViewById(R.id.category_recycler_view));
-
-        // Set the foreground view for item animation
-        holder.foregroundView.setBackgroundColor(Color.WHITE);
+        });
     }
 
     @Override
@@ -127,10 +133,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         notifyDataSetChanged();
     }
 
-    // Helper method to resize a drawable
-    private Drawable resizeDrawable(Drawable drawable, int width, int height) {
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-        return new BitmapDrawable(context.getResources(), resizedBitmap);
+    private void deleteCategory(String categoryId) {
+        firebaseManager.deleteCategory(categoryId, new Callback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(context.getApplicationContext(), "Couldn't delete category.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
