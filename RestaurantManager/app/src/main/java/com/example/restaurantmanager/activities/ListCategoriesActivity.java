@@ -3,6 +3,8 @@ package com.example.restaurantmanager.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +19,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.restaurantmanager.MainActivity;
 import com.example.restaurantmanager.R;
 import com.example.restaurantmanager.adapters.CategoryAdapter;
 import com.example.restaurantmanager.models.Category;
+import com.example.restaurantmanager.ui.dashboard.DashboardFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,7 +43,6 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
     private RecyclerView categoryRecyclerView;
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
-    private ColorDrawable background;
 
     private FloatingActionButton categoryFAB;
 
@@ -64,7 +68,6 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
         categoryAdapter.setOnItemClickListener(this);
         categoryRecyclerView.setAdapter(categoryAdapter);
 
-        DeleteCategory();
         onFABClicked();
     }
 
@@ -75,53 +78,9 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
         intent.putExtra("categoryId", category.getCategoryId());
         intent.putExtra("className", getComponentName().getShortClassName());
         startActivity(intent);
-        //Toast.makeText(this, "Clicked: " + category.getName(), Toast.LENGTH_SHORT).show();
     }
 
-    private void DeleteCategory() {
-        //deleteIcon = ContextCompat.getDrawable(this, R.drawable.delete);
-        background = new ColorDrawable(Color.RED);
 
-        ItemTouchHelper.SimpleCallback swipeToDeleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (direction == ItemTouchHelper.LEFT) {
-                    int position = viewHolder.getAdapterPosition();
-                    Category deletedCategory = categories.get(position);
-                    deleteCategory(deletedCategory.getCategoryId());
-                    categories.remove(position);
-                    categoryAdapter.notifyItemRemoved(position);
-                    Toast.makeText(ListCategoriesActivity.this, "Deleted: " + deletedCategory.getName(), Toast.LENGTH_SHORT).show();
-                } else if (direction == ItemTouchHelper.RIGHT) {
-                    int position = viewHolder.getAdapterPosition();
-                    Category currentCategory = categories.get(position);
-                    Intent intent = new Intent(ListCategoriesActivity.this, UpdateCategoryActivity.class);
-
-                    intent.putExtra("id", currentCategory.getCategoryId());
-                    intent.putExtra("name", currentCategory.getName());
-                    intent.putExtra("image", currentCategory.getImageUrl());
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-                View itemView = viewHolder.itemView;
-                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-                background.draw(c);
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
-        itemTouchHelper.attachToRecyclerView(categoryRecyclerView);
-    }
 
     private void onFABClicked() {
         categoryFAB.setOnClickListener(new View.OnClickListener() {
@@ -148,20 +107,6 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
         });
     }
 
-    private void deleteCategory(String categoryId) {
-        firebaseManager.deleteCategory(categoryId, new Callback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                //Toast.makeText(getApplicationContext(), "Category deleted successfully.", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(getApplicationContext(), "Couldn't delete category.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -172,5 +117,13 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // This code will be triggered when the activity is being restarted
+        // due to navigation from another activity (e.g., coming back from a back press)
+        recreate();
     }
 }

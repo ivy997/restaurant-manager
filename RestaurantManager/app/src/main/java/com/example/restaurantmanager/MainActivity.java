@@ -1,7 +1,11 @@
 package com.example.restaurantmanager;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.restaurantmanager.activities.AddCategoryActivity;
+import com.example.restaurantmanager.activities.UpdateCategoryActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,5 +37,4 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
-
 }

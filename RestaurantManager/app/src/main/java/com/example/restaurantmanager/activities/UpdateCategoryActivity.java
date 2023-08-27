@@ -4,6 +4,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.restaurantmanager.MainActivity;
 import com.example.restaurantmanager.R;
 import com.example.restaurantmanager.adapters.CategoryAdapter;
 import com.example.restaurantmanager.models.Category;
@@ -147,8 +150,8 @@ public class UpdateCategoryActivity extends AppCompatActivity {
         firebaseManager.updateCategory(categoryToUpdate, new Callback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                // Handle successful update
-                Toast.makeText(UpdateCategoryActivity.this, "Category updated successfully", Toast.LENGTH_SHORT).show();
+                finish();
+                onBackPressed();
             }
 
             @Override
@@ -157,10 +160,6 @@ public class UpdateCategoryActivity extends AppCompatActivity {
                 Toast.makeText(UpdateCategoryActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-
-        startActivity(new Intent(UpdateCategoryActivity.this,
-                ListCategoriesActivity.class));
-        finish();
     }
 
     private void openGallery() {

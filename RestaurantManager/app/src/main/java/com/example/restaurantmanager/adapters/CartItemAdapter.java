@@ -164,18 +164,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
         notifyDataSetChanged();
     }
 
-    private void updateCartItem(CartItem item) {
-        firebaseManager.updateCartItem(item, new Callback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-            }
-        });
-    }
-
     private void updateCartItemInOrder(Order order) {
         firebaseManager.updateCartItemInOrder(order, new Callback<Void>() {
             @Override
@@ -189,21 +177,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
         });
     }
 
-    private void deleteCartItem(CartItem item) {
-        firebaseManager.deleteCartItem(item.getCartItemId(), new Callback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-            }
-        });
-    }
-
     private void hideKeyboard(EditText editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
-
 }
