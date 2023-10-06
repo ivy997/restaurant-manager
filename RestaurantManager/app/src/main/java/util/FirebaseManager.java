@@ -265,6 +265,7 @@ public class FirebaseManager {
 
         Map<String, Object> updates = new HashMap<>();
         updates.put("items", order.getItems());
+        updates.put("billPrice", order.getBillPrice());
 
         documentRef.update(updates)
                 .addOnSuccessListener(aVoid -> {

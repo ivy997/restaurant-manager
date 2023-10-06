@@ -30,7 +30,6 @@ import util.Callback;
 import util.FirebaseManager;
 
 public class UpdateDishActivity extends AppCompatActivity {
-
     private ActivityResultLauncher<Intent> galleryLauncher;
     private Dish dishToUpdate;
     // Widgets
@@ -149,6 +148,8 @@ public class UpdateDishActivity extends AppCompatActivity {
             public void onSuccess(Void result) {
                 // Handle successful update
                 Toast.makeText(UpdateDishActivity.this, "Dish updated successfully", Toast.LENGTH_SHORT).show();
+                finish();
+                onBackPressed();
             }
             @Override
             public void onError(String errorMessage) {
@@ -157,9 +158,9 @@ public class UpdateDishActivity extends AppCompatActivity {
             }
         });
 
-        startActivity(new Intent(UpdateDishActivity.this,
+        /*startActivity(new Intent(UpdateDishActivity.this,
                 ListDishesActivity.class));
-        finish();
+        finish();*/
     }
 
     private void openGallery() {

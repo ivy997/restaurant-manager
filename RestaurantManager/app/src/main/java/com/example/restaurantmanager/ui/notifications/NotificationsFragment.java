@@ -24,29 +24,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import util.RestaurantUser;
 
 public class NotificationsFragment extends Fragment {
-
     private FragmentNotificationsBinding binding;
     private FirebaseAuth firebaseAuth;
-    //private LinearLayout profile;
     private LinearLayout email;
     private LinearLayout password;
-    private LinearLayout privacy;
-    private LinearLayout about;
     private Button logoutBtn;
     private TextView emailTV;
     private TextView nameTV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
-
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         firebaseAuth = FirebaseAuth.getInstance();
         nameTV = root.findViewById(R.id.restaurantName);
         emailTV = root.findViewById(R.id.restaurantEmail);
@@ -59,7 +48,6 @@ public class NotificationsFragment extends Fragment {
             nameTV.setText(restaurantUser.getRestaurantName());
             emailTV.setText(firebaseAuth.getCurrentUser().getEmail());
         }
-
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +55,6 @@ public class NotificationsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +62,6 @@ public class NotificationsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,16 +80,13 @@ public class NotificationsFragment extends Fragment {
     private void logout() {
         // Sign out the current user
         firebaseAuth.signOut();
-
         // Redirect the user to the login screen (Assuming LoginActivity is the login screen)
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.putExtra("logout", "logout");
         startActivity(intent);
-
         // Finish the current activity to prevent the user from going back to it after logout
         if (getActivity() != null) {
             getActivity().finish();
         }
     }
-
 }

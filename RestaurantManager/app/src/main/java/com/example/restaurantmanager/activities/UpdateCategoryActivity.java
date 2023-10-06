@@ -52,7 +52,6 @@ public class UpdateCategoryActivity extends AppCompatActivity {
     private ImageView addPhotoButton;
     private EditText titleEditText;
     private ImageView image;
-
     // Connection to Firestore
     private FirebaseManager firebaseManager;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

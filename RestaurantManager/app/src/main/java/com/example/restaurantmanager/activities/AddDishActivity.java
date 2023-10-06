@@ -38,9 +38,7 @@ import util.FirebaseManager;
 import util.RestaurantUser;
 
 public class AddDishActivity extends AppCompatActivity {
-
     private ActivityResultLauncher<Intent> galleryLauncher;
-
     // Widgets
     private Button saveButton;
     private ProgressBar progressBar;
@@ -72,6 +70,7 @@ public class AddDishActivity extends AppCompatActivity {
 
         // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add Menu Item");
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseManager = new  FirebaseManager();
@@ -88,16 +87,6 @@ public class AddDishActivity extends AppCompatActivity {
         if (RestaurantUser.getInstance() != null) {
             currentUserId = RestaurantUser.getInstance().getUserId();
         }
-
-        /*authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // IDK
-                }
-            }
-        };*/
 
         Bundle extras = getIntent().getExtras();
         categoryId = extras.getString("categoryId");
@@ -153,9 +142,9 @@ public class AddDishActivity extends AppCompatActivity {
                                                     String dishId = documentReference.getId();
                                                     dish.setDishId(dishId);
                                                     updateDish(dish);
-                                                    startActivity(new Intent(AddDishActivity.this,
+                                                    /*startActivity(new Intent(AddDishActivity.this,
                                                             ListDishesActivity.class));
-                                                    finish();
+                                                    finish();*/
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
@@ -205,6 +194,8 @@ public class AddDishActivity extends AppCompatActivity {
         firebaseManager.updateDish(dish, new Callback<Void>() {
             @Override
             public void onSuccess(Void result) {
+                finish();
+                onBackPressed();
             }
 
             @Override

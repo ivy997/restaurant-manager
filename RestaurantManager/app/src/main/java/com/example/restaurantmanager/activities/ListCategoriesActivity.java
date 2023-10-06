@@ -38,23 +38,19 @@ import util.Callback;
 import util.FirebaseManager;
 
 public class ListCategoriesActivity extends AppCompatActivity implements CategoryAdapter.OnItemClickListener {
-
     private FirebaseManager firebaseManager;
     private RecyclerView categoryRecyclerView;
     private List<Category> categories;
     private CategoryAdapter categoryAdapter;
-
     private FloatingActionButton categoryFAB;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_categories);
 
-        // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Categories");
 
-        // Initialize the RecyclerView and ArrayList
         categoryRecyclerView = findViewById(R.id.category_recycler_view);
         categories = new ArrayList<>();
         firebaseManager = new FirebaseManager();
@@ -62,7 +58,6 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
 
         getCategoriesFromFirestore();
 
-        // Create the CategoryAdapter and set it to the RecyclerView
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoryAdapter = new CategoryAdapter(categories);
         categoryAdapter.setOnItemClickListener(this);
@@ -79,8 +74,6 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
         intent.putExtra("className", getComponentName().getShortClassName());
         startActivity(intent);
     }
-
-
 
     private void onFABClicked() {
         categoryFAB.setOnClickListener(new View.OnClickListener() {
@@ -99,14 +92,11 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
                 categories = result;
                 categoryAdapter.setCategories(categories);
             }
-
             @Override
             public void onError(String errorMessage) {
-                // Handle error
             }
         });
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -118,7 +108,6 @@ public class ListCategoriesActivity extends AppCompatActivity implements Categor
 
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     protected void onRestart() {
         super.onRestart();

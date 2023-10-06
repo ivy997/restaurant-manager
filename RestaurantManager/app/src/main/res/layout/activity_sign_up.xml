@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="20dp"
     tools:context=".SignUpActivity">
 
     <TextView
         android:id="@+id/signupSign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="120dp"
         android:text="Sign Up"
         android:textColor="@color/black"
         android:textSize="35sp"
@@ -23,7 +23,7 @@
         android:id="@+id/signupUndersign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginTop="4dp"
         android:text="Create an account"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,28 +32,21 @@
     <EditText
         android:id="@+id/name"
         android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="196dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="26dp"
+        android:layout_height="48sp"
+        android:layout_marginTop="10dp"
         android:hint="Restaurant Name"
-        app:layout_constraintBottom_toTopOf="@+id/etEmailSignup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/signupUndersign" />
 
     <EditText
         android:id="@+id/etEmailSignup"
         android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="31dp"
+        android:layout_height="48sp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/etPasswordSignup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -61,14 +54,11 @@
     <EditText
         android:id="@+id/etPasswordSignup"
         android:layout_width="0dp"
-        android:layout_height="45sp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="343dp"
+        android:layout_height="48sp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmailSignup" />
@@ -77,16 +67,13 @@
         android:id="@+id/signupBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="264dp"
-        android:backgroundTint="@color/black"
         android:text="Sign up"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPasswordSignup"/>
 
     <TextView
         android:id="@+id/loginTxt"
@@ -104,9 +91,7 @@
     <Button
         android:id="@+id/loginFromSignUpBtn"
         android:layout_width="87dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="6dp"
-        android:backgroundTint="@color/black"
+        android:layout_height="48dp"
         android:text="Login"
         android:textColor="@color/white"
         android:textSize="10sp"

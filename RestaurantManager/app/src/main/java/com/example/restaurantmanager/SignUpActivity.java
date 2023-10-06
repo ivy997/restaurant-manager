@@ -30,7 +30,6 @@ import java.util.Objects;
 import util.RestaurantUser;
 
 public class SignUpActivity extends AppCompatActivity {
-
     EditText restaurantName;
     EditText email;
     EditText password;
@@ -52,14 +51,19 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        // Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
-
         signupBtn = findViewById(R.id.signupBtn);
         loginBtn = findViewById(R.id.loginFromSignUpBtn);
         restaurantName = findViewById(R.id.name);
         email = findViewById(R.id.etEmailSignup);
         password = findViewById(R.id.etPasswordSignup);
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currUser = firebaseAuth.getCurrentUser();
+            }
+        };
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,21 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // Authentication
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                currUser = firebaseAuth.getCurrentUser();
-
-                if (currUser != null) {
-                    // User is already logged in
-
-                } else {
-                    // No User yet
-                }
-            }
-        };
 
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,70 +91,20 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    /*private void CreateUser(String email_str, String pass_str, String name) {
-        firebaseAuth.createUserWithEmailAndPassword(email_str, pass_str)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Take user to next activity
-                            currUser = firebaseAuth.getCurrentUser();
-                            assert currUser != null;
-                            final String currUserId = currUser.getUid();
-
-                            // Create a UserMap so we can create a user in the UserCollection in Firestore
-                            Map<String, String> user = new HashMap<>();
-                            user.put("userId", currUserId);
-                            user.put("restaurantName", name);
-
-                            // Add the user to the Firestore collection with the user ID as the document ID
-                            collectionReference.document(currUserId)
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            // User added successfully to Firestore
-                                            // Getting user of Global Restaurant user
-                                            RestaurantUser restaurantUser = RestaurantUser.getInstance();
-                                            restaurantUser.setUserId(currUserId);
-
-                                            // If the user is registered successfully, move to MainActivity
-                                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                            intent.putExtra("restaurantName", name);
-                                            intent.putExtra("userId", currUserId);
-                                            startActivity(intent);
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            // Error adding user to Firestore
-                                            Toast.makeText(SignUpActivity.this, "Failed to create user.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    }
-                });
-    }*/
-
-
     private void CreateUser(String email_str, String pass_str, String name) {
         firebaseAuth.createUserWithEmailAndPassword(email_str, pass_str)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Take user to next activity
                             currUser = firebaseAuth.getCurrentUser();
                             assert currUser != null;
                             final String currUserId = currUser.getUid();
 
-                            // Create a UserMap so we can create a user in the UserCollection in the Firestore
                             Map<String, String> user = new HashMap<>();
                             user.put("userId", currUserId);
                             user.put("restaurantName", name);
 
-                            // Adding users to Firestore
                             collectionReference.add(user)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override

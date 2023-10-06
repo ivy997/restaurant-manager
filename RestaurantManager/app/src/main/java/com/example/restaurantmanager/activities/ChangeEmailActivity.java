@@ -21,7 +21,6 @@ public class ChangeEmailActivity extends AppCompatActivity {
     private EditText newEmail;
     private EditText pass;
     private Button updateBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +31,8 @@ public class ChangeEmailActivity extends AppCompatActivity {
         pass = findViewById(R.id.passET);
         updateBtn = findViewById(R.id.updateBtn);
 
-        // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Change email");
 
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override

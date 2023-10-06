@@ -21,6 +21,6 @@
         android:layout_marginBottom="25dp"
         android:src="@drawable/ic_categories_add_category_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

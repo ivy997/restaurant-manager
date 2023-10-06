@@ -1,6 +1,7 @@
 package com.example.restaurantmanager.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -21,7 +22,8 @@ public class Dish implements Serializable {
 
     public Dish(String name, String description, String imageUrl, float price, boolean addedToCart, String categoryId, String userId) {
         this.name = name;
-        this.keywords .add(Arrays.toString(name.toLowerCase().split("")));;
+        this.keywords = new ArrayList<String>();
+        this.keywords.add(Arrays.toString(name.toLowerCase().split("")));
         this.description = description;
         this.imageUrl = imageUrl;
         this.price = price;

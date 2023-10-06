@@ -31,16 +31,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import util.RestaurantUser;
 
 public class LoginActivity extends AppCompatActivity {
-
     // Widgets
     private Button login;
     private Button register;
     private EditText email;
     private EditText password;
-
     // Firebase Connection
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     // Firebase Authentication
     private FirebaseAuth firebaseAuth;
     private CollectionReference collectionReference = db.collection("Users");
@@ -127,9 +124,6 @@ public class LoginActivity extends AppCompatActivity {
                                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            /*if (error != null) {
-
-                                            }*/
                                             assert value != null;
                                             if (!value.isEmpty()) {
                                                 for (QueryDocumentSnapshot snapshot : value) {

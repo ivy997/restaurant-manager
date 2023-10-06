@@ -141,6 +141,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
                         item.setQuantity(Integer.parseInt(newItemCount));
                         items.set(holder.getAdapterPosition(), item);
                         order.setItems(items);
+                        float updatedBill = calculateTotalPrice();
+                        order.setBillPrice(updatedBill);
                         updateCartItemInOrder(order);
                         hideKeyboard(holder.editItemCount);
                         return true; // Return true to consume the event
@@ -180,5 +182,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartVi
     private void hideKeyboard(EditText editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    private float calculateTotalPrice() {
+        float totalPrice = 0.0f;
+        for (CartItem item : items) {
+            float dishPrice = item.getDish().getPrice();
+            int itemCount = item.getQuantity();
+            totalPrice += dishPrice * itemCount;
+        }
+        return totalPrice;
     }
 }

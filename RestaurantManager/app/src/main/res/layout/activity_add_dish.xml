@@ -33,18 +33,17 @@
 
     <EditText
         android:id="@+id/dishDescET"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/textbox_background"
         android:gravity="top"
         android:hint="Description"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/saveDishBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceET" />
 
     <ImageView
         android:layout_width="80dp"
@@ -79,9 +78,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
         android:text="Save"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.117"

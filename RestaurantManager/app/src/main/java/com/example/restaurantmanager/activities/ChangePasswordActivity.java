@@ -28,16 +28,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-
         firebaseManager = new FirebaseManager();
         oldPass = findViewById(R.id.oldPassET);
         newPass = findViewById(R.id.newPassET);
         confirm = findViewById(R.id.confirmPassET);
         updateBtn = findViewById(R.id.confirmBtn);
 
-        // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setTitle("Change password");
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +53,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         });
     }
-
     private void changePassword(String currentPassword, String newPassword) {
         firebaseManager.changePassword(currentPassword, newPassword, new Callback<Void>() {
             @Override
@@ -64,17 +61,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChangePasswordActivity.this, NotificationsFragment.class);
                 startActivity(intent);
             }
-
             @Override
             public void onError(String errorMessage) {
-                // Handle error
                 Toast.makeText(ChangePasswordActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(ChangePasswordActivity.this, NotificationsFragment.class);
                 startActivity(intent);
             }
         });
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -83,7 +77,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

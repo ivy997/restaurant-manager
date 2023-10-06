@@ -30,21 +30,19 @@ import util.Callback;
 import util.FirebaseManager;
 
 public class ListDishesActivity extends AppCompatActivity implements DishAdapter.OnItemClickListener{
-
     private FirebaseManager firebaseManager;
     private RecyclerView dishRecyclerView;
     private List<Dish> dishes;
     private DishAdapter dishAdapter;
     private ColorDrawable background;
     private FloatingActionButton dishFAB;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_dishes);
 
-        // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Menu Items");
 
         String categoryId = "";
         Bundle extras = getIntent().getExtras();
@@ -52,16 +50,10 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
         if (extras != null) {
             String className = extras.getString("className");
             if (className.equals(".activities.ListCategoriesActivity")) {
-                // Perform actions specific to List Categories Activity
-                Toast.makeText(getApplicationContext(), "Coming from List Categories Activity", Toast.LENGTH_SHORT).show();
                 categoryId = extras.getString("categoryId");
             }
-        } else {
-            // Perform actions specific to Dashboard Fragment
-            Toast.makeText(getApplicationContext(), "Coming from Dashboard fragment", Toast.LENGTH_SHORT).show();
         }
 
-        // Initialize the RecyclerView and ArrayList
         dishRecyclerView = findViewById(R.id.dish_recycler_view);
         dishes = new ArrayList<>();
         firebaseManager = new FirebaseManager();
@@ -73,7 +65,6 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
             getDishesByCategory(categoryId);
         }
 
-        // Create the CategoryAdapter and set it to the RecyclerView
         dishRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         dishAdapter = new DishAdapter(dishes);
         dishAdapter.setOnItemClickListener(this);
@@ -100,13 +91,11 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
 
     private void DeleteDish() {
         background = new ColorDrawable(Color.RED);
-
         ItemTouchHelper.SimpleCallback swipeToDeleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.LEFT) {
@@ -128,17 +117,15 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
                     startActivity(intent);
                 }
             }
-
             @Override
-            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
                 View itemView = viewHolder.itemView;
                 background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
                 background.draw(c);
             }
         };
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchHelper.attachToRecyclerView(dishRecyclerView);
     }
@@ -150,10 +137,8 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
                 dishes = result;
                 dishAdapter.setDishes(dishes);
             }
-
             @Override
             public void onError(String errorMessage) {
-                // Handle error
             }
         });
     }
@@ -168,7 +153,6 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
 
             @Override
             public void onError(String errorMessage) {
-                // Handle error
             }
         });
     }
@@ -196,5 +180,13 @@ public class ListDishesActivity extends AppCompatActivity implements DishAdapter
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // This code will be triggered when the activity is being restarted
+        // due to navigation from another activity (e.g., coming back from a back press)
+        recreate();
     }
 }

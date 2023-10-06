@@ -48,32 +48,25 @@ import util.RestaurantUser;
 
 public class AddCategoryActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> galleryLauncher;
-
-    // Widgets
     private Button saveButton;
     private ProgressBar progressBar;
     private ImageView addPhotoButton;
     private EditText titleEditText;
     private ImageView image;
-
-    // Connection to Firestore
     private FirebaseManager firebaseManager;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private CollectionReference collectionReference = db.collection("Categories");
     private Uri imageUri;
-
-    // User id and Username
     private String currentUserId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
 
-        // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add Category");
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseManager = new FirebaseManager();
@@ -82,7 +75,6 @@ public class AddCategoryActivity extends AppCompatActivity {
         image = findViewById(R.id.categoryIV);
         saveButton = findViewById(R.id.saveCategoryBtn);
         addPhotoButton = findViewById(R.id.categoryCameraButton );
-
         progressBar.setVisibility(View.INVISIBLE);
 
         if (RestaurantUser.getInstance() != null) {
@@ -103,31 +95,25 @@ public class AddCategoryActivity extends AppCompatActivity {
 
     private void SaveCategory() {
         final String title = titleEditText.getText().toString().trim();
-
         progressBar.setVisibility(View.VISIBLE);
 
         if (!TextUtils.isEmpty(title)
                 && imageUri != null) {
-
             // the saving path of the images in Storage Firebase:
             final StorageReference filepath = storageReference
                     .child("categories_images")
                     .child("image_"+ Timestamp.now().getSeconds());
-
             // Uploading the image
             filepath.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                             filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String imageUrl = uri.toString();
-
                                     // Creating object of Category
                                     Category category = new Category(title, imageUrl, currentUserId);
-
                                     // Invoking Collection Reference
                                     collectionReference.add(category)
                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -154,14 +140,12 @@ public class AddCategoryActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.INVISIBLE);
                         }
                     });
-
         } else{
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
     public void saveCategoryActivityForResult() {
-
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

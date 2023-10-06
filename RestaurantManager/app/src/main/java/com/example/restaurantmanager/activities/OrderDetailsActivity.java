@@ -32,7 +32,6 @@ import util.Callback;
 import util.FirebaseManager;
 
 public class OrderDetailsActivity extends AppCompatActivity implements CartItemAdapter.OnItemClickListener{
-
     private FirebaseManager firebaseManager;
     private CartItemAdapter itemAdapter;
     private List<CartItem> items;
@@ -44,20 +43,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         setContentView(R.layout.activity_order_details);
 
         firebaseManager = new FirebaseManager();
-
-        // Enable the up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Order Details");
 
         Order order = (Order) getIntent().getSerializableExtra("order");
         items = order.getItems();
-
         firebaseManager = new FirebaseManager();
-
         itemsRecyclerView = findViewById(R.id.cartItemRecyclerView);
         Spinner spinner = findViewById(R.id.spinner);
         Button update = findViewById(R.id.updateBtn);
-        //Button delete = findViewById(R.id.deleteBtn);
-
         OrderStatus[] options = OrderStatus.values();
 
         itemAdapter = new CartItemAdapter(items);
@@ -65,7 +59,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         itemAdapter.setOnItemClickListener(this, this, order);
         itemsRecyclerView.setAdapter(itemAdapter);
 
-        ArrayAdapter<OrderStatus> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options);
+        ArrayAdapter<OrderStatus> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, options);
         spinner.setAdapter(adapter);
 
         int statusPosition = getCurrentOrderStatusIndex(options, order);
@@ -74,16 +69,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Handle the selected item change
                 OrderStatus selectedItem = (OrderStatus) parent.getItemAtPosition(position);
                 order.setOrderStatus(selectedItem);
-                //updateOrder(order);
-                // Perform actions based on the selected item (Update order)
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case where no item is selected
-                // Do nothing
             }
         });
 
@@ -97,7 +87,6 @@ public class OrderDetailsActivity extends AppCompatActivity implements CartItemA
 
     @Override
     public void OnCartItemClick(int position) {
-
     }
 
     private void updateOrder(Order order) {

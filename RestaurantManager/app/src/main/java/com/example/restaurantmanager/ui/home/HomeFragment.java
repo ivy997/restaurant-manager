@@ -19,6 +19,7 @@ import com.example.restaurantmanager.R;
 import com.example.restaurantmanager.activities.OrderDetailsActivity;
 import com.example.restaurantmanager.adapters.OrderAdapter;
 import com.example.restaurantmanager.databinding.FragmentHomeBinding;
+import com.example.restaurantmanager.enums.OrderStatus;
 import com.example.restaurantmanager.models.Order;
 
 import java.io.Serializable;
@@ -29,7 +30,6 @@ import util.Callback;
 import util.FirebaseManager;
 
 public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickListener{
-
     private FragmentHomeBinding binding;
     private FirebaseManager firebaseManager;
     private OrderAdapter orderAdapter;
@@ -40,14 +40,8 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         firebaseManager = new FirebaseManager();
         orders = new ArrayList<>();
@@ -77,7 +71,6 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
         Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
         intent.putExtra("order", (Serializable) order);
         startActivity(intent);
-        Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
     }
 
     private void getOrders() {
@@ -102,10 +95,12 @@ public class HomeFragment extends Fragment implements OrderAdapter.OnItemClickLi
 
         for (Order order : this.orders) {
             totalOrders++;
-            totalIncome += order.getBillPrice();
+            if (order.getOrderStatus() == OrderStatus.PAID){
+                totalIncome += order.getBillPrice();
+            }
         }
 
-        ordersCount.setText("Today's orders: " + totalOrders);
-        ordersIncome.setText("Today's profit: " + totalIncome + " лв.");
+        ordersCount.setText(String.valueOf("Today's orders: " + totalOrders));
+        ordersIncome.setText(String.valueOf("Today's profit: " + totalIncome + " лв."));
     }
 }
